@@ -5,20 +5,20 @@
   "appid": "wxa4d7417aac267091",
   "setting": {
     "urlCheck": true,
-    "es6": false,
-    "enhance": false,
+    "es6": true,
+    "enhance": true,
     "compileHotReLoad": false,
     "postcss": false,
     "minified": false,
-    "ignoreUploadUnusedFiles": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "condition": false
   },
   "compileType": "miniprogram",
-  "libVersion": "3.2.4",
+  "libVersion": "3.2.2",
   "srcMiniprogramRoot": "dist/",
   "packOptions": {
     "ignore": [],
