@@ -3,6 +3,7 @@ import Taro,{ useLoad, useReady } from '@tarojs/taro'
 import { View, Text,Canvas,Button } from '@tarojs/components'
 import './index.scss'
 import { CustomWrapper } from '@tarojs/components'
+import { MyCoverImage } from '@/components/image'
 export default function Home() {
   // useLoad(() => {
   //   console.log('Page loaded.')
@@ -40,6 +41,7 @@ export default function Home() {
 
   return (
     <View className='home'>
+        <MyCoverImage></MyCoverImage>
       {/* <Text id="target">Hello world!</Text> */}
       {/* <Button onClick={ () => setIsShow(true)}>Load Component</Button>
       { isShow && <LazyFloor></LazyFloor> } */}
