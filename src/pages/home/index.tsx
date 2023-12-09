@@ -1,8 +1,9 @@
 import React, { createRef, useEffect, useState } from 'react'
-import Taro,{ useLoad, useReady } from '@tarojs/taro'
+import Taro,{ useDidShow, useLoad, useReady } from '@tarojs/taro'
 import { View, Text,Canvas,Button } from '@tarojs/components'
 import './index.scss'
 import { CustomWrapper } from '@tarojs/components'
+import eventBus from '@/event'
 export default function Home() {
   // useLoad(() => {
   //   console.log('Page loaded.')
@@ -27,15 +28,23 @@ export default function Home() {
   //     .exec(res => console.log('res:',res))
   // })
 
-  const wrapperRef:any = createRef()
+  // const wrapperRef:any = createRef()
 
-  useReady(() => {
-    Taro.createSelectorQuery()
-      .in(wrapperRef.current.ctx)
-      .select(`.ec-canvas`)
-      .fields({ node: true, size: true })
-      .exec(res => console.log('res: ', res))
-  })  
+  // useReady(() => {
+  //   Taro.createSelectorQuery()
+  //     .in(wrapperRef.current.ctx)
+  //     .select(`.ec-canvas`)
+  //     .fields({ node: true, size: true })
+  //     .exec(res => console.log('res: ', res))
+  // })  
+
+  const handleShow = (options:any) => {
+    console.log(options)
+  }
+
+  useDidShow(() => {
+    eventBus.on('handleShow',handleShow)
+  })
 
 
   return (

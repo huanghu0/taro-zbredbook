@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { useLaunch,useDidShow,useDidHide,useLoad,useUnload } from '@tarojs/taro'
+import eventBus from '@/event/index'
 import './app.scss'
 
 // taro不仅支持react的hooks 还支持小程序的生命周期钩子
@@ -25,6 +26,10 @@ function App({ children }: PropsWithChildren<any>) {
 
   useUnload(() => {
     console.log('App unload')
+  })
+
+  useDidHide(() => {
+    eventBus.off()
   })
 
 
