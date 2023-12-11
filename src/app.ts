@@ -1,6 +1,8 @@
 import { PropsWithChildren } from 'react'
+import Taro from '@tarojs/taro'
 import { useLaunch,useDidShow,useDidHide,useLoad,useUnload } from '@tarojs/taro'
 import eventBus from '@/event/index'
+import login from './api/login'
 import './app.scss'
 
 // taro不仅支持react的hooks 还支持小程序的生命周期钩子
@@ -12,8 +14,18 @@ function App({ children }: PropsWithChildren<any>) {
     console.log('App launched.')
   })
 
-  useDidShow(() => {
-    console.log('App show')
+  useDidShow(async () => {
+    // console.log('App show')
+    const res:any = await login({
+      data:{
+        name:'18751609896',
+        pwd:'123456'
+      }
+    })
+    const { data } = res
+    Taro.setStorageSync('userInfo',JSON.stringify(data))
+    // console.log(res,'res------------------')
+
   })
 
   useDidHide(() => {
