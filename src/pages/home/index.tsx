@@ -1,88 +1,61 @@
-import React, { createRef, useEffect, useState } from 'react'
+import React, { createRef, useCallback, useEffect, useState } from 'react'
 import Taro,{ useDidShow, useLoad, useReady } from '@tarojs/taro'
 import { View, Text,Canvas,Button } from '@tarojs/components'
+import getHomeList from '@/api/home'
 import './index.scss'
-import { CustomWrapper } from '@tarojs/components'
-import eventBus from '@/event'
+const SIZE = 10;
 export default function Home() {
-  // useLoad(() => {
-  //   console.log('Page loaded.')
-  // })
+    const [data,setData] = useState<ArticleSimple[]>([]) // 页面数据
+    const [refresh,setRefresh] = useState<boolean>(false) // 加载
+    const [page,setPage] =  useState<number>(1) // 页面page
 
-  // useReady(() => {
-  //   Taro.createSelectorQuery()
-  //       .select('#target')
-  //       .boundingClientRect()
-  //       .exec((res) => console.log(res,'res---------------'))
-  // })
+    const requestHomeList = useCallback(async () => {
+      if(refresh){
+        return
+      }
+      
+      try {
+          Taro.showLoading()
+          setRefresh(true)
+          const params = {
+            data:{
+              page,
+              size:SIZE
+            }
+          }
+          const res:any = await getHomeList(params)
+          const { data } = res
+          if(data?.length){
+              if(page === 1){
+                  setData(preData =>  data) 
+              }else{
+                  setData(preData => [...preData,...data])
+              }
+              setPage(prePage => prePage + 1)
+          }else{
+              if(page === 1){
+                  setData([])
+              }else{
+                  
+              }
+          }
 
-  // const [isShow,setIsShow] = useState(false)
+      }catch(err){
+          console.log(err);
+      }finally{
+        Taro.hideLoading()
+        setRefresh(false)
+      }
+  },[])   
 
-  // const wrapperRef:any = createRef()
-
-  // useReady(() => {
-  //   Taro.createSelectorQuery()
-  //     .in(wrapperRef.current.ctx)
-  //     .select('.ec-canvas')
-  //     .fields({node:true,size:true})
-  //     .exec(res => console.log('res:',res))
-  // })
-
-  // const wrapperRef:any = createRef()
-
-  // useReady(() => {
-  //   Taro.createSelectorQuery()
-  //     .in(wrapperRef.current.ctx)
-  //     .select(`.ec-canvas`)
-  //     .fields({ node: true, size: true })
-  //     .exec(res => console.log('res: ', res))
-  // })  
-
-  const handleShow = (options:any) => {
-    console.log(options)
-  }
-
-  useDidShow(() => {
-    eventBus.on('handleShow',handleShow)
-  })
+  useEffect(() => {
+    requestHomeList()
+  },[])
 
 
   return (
     <View className='home'>
-      {/* <Text id="target">Hello world!</Text> */}
-      {/* <Button onClick={ () => setIsShow(true)}>Load Component</Button>
-      { isShow && <LazyFloor></LazyFloor> } */}
-      {/* <CustomWrapper ref={wrapperRef}>
-        <Canvas canvasId="canvas" className="ec-canvas"></Canvas> 
-      </CustomWrapper>  */}
-      {/* <View><View><View>
-            <View><View><View><View>
-              <View><View><View><View>
-                <CustomWrapper ref={wrapperRef}>
-                <View><View><View><View>
-                  <Canvas canvasId='canvas' className='ec-canvas'></Canvas>
-                </View></View></View></View>
-                </CustomWrapper>
-              </View></View></View></View>
-            </View></View></View></View>
-      </View></View></View> */}
-    </View>
-  )
-}
 
-
-function LazyFloor(){
-  useEffect(() => {
-    Taro.nextTick(() => {
-      Taro.createSelectorQuery()
-          .select('.ec-canvas')
-          .fields({node:true,size:true})
-          .exec(res => console.log('res:',res))
-    })
-  })
-  return (
-    <View>
-      <Canvas canvasId='canvas' className='ec-canvas'></Canvas>
     </View>
   )
 }
