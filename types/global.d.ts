@@ -71,6 +71,7 @@ type ArticleSimple = {
     favoriteCount: number;
     isFavorite: boolean;
     image: string;
+    height: number
 }
 
 type Category = {
